@@ -17,7 +17,7 @@ function Navbar() {
             Prisha Policy
           </Typography>
           <div className="centerLinks">
-            <Link to="#" className="link">
+            <Link to="/" className="link">
               Home
             </Link>
             <Link to="#" className="link">
