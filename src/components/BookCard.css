@@ -1,0 +1,16 @@
+.add-book {
+    display: flex;
+    width: 160px;
+    height: 130px;
+    padding: 32px 4px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px dashed var(--blue-700-bay, #27378C);
+    margin-left: 18px;
+    margin-top: 16px;
+    cursor: pointer;
+}
