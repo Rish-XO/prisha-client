@@ -1,0 +1,30 @@
+/* NavbarStyles.css */
+.appBar {
+    background-color: white !important;
+  }
+  
+  .title-left {
+    text-align: left;
+    font-style: italic;
+    color: darkblue;
+  }
+  
+  .centerLinks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: darkblue;
+    margin: 0 10px;
+  }
+
+
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
