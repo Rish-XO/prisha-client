@@ -5,7 +5,6 @@ import BookCard from "../components/BookCard";
 
 function Home() {
   return (
-    <Fragment>
       <Container>
         <Box sx={{ marginTop: "55px"}}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -24,7 +23,7 @@ function Home() {
           </Box>
         </Box>
       </Container>
-    </Fragment>
+  
   );
 }
 

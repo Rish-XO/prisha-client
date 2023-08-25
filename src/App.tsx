@@ -3,6 +3,7 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import Home from "./pages/Home";
+import Show from "./pages/Show";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,9 @@ const router = createBrowserRouter([
       {
         index: true,
         element : <Home />
+      },{
+        path: ':id',
+        element: <Show />
       }
     ]
   },
