@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import React from "react";
 import "./BookCard.css";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { NavLink } from "react-router-dom";
+import { trpc } from "../lib/trpc";
 
 const dummy = [
   "balls",
@@ -25,6 +26,9 @@ const dummy = [
 ];
 
 function BookCard() {
+  const booksQueryResponse = trpc.getAllBooks.useQuery();
+  const data = booksQueryResponse.data?.rows;
+  console.log(data);
   return (
     <Grid container spacing={2}>
       {/* there will the mapping and need to put key in grid item */}
@@ -52,11 +56,12 @@ function BookCard() {
         </Grid>
       ))}
       <NavLink to="/new">
-
-      <div  className="add-book">
-        <AddIcon />
-        <Typography sx={{textDecoration: 'underline' , color: "darkblue"}}>Add a book</Typography>
-      </div>
+        <div className="add-book">
+          <AddIcon />
+          <Typography sx={{ textDecoration: "underline", color: "darkblue" }}>
+            Add a book
+          </Typography>
+        </div>
       </NavLink>
     </Grid>
   );
