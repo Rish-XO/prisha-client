@@ -9,6 +9,7 @@ import {
 import React from "react";
 import "./BookCard.css";
 import AddIcon from '@mui/icons-material/Add';
+import { NavLink } from "react-router-dom";
 
 const dummy = [
   "balls",
@@ -50,10 +51,13 @@ function BookCard() {
           </Box>
         </Grid>
       ))}
-      <div className="add-book">
+      <NavLink to="/new">
+
+      <div  className="add-book">
         <AddIcon />
         <Typography sx={{textDecoration: 'underline' , color: "darkblue"}}>Add a book</Typography>
       </div>
+      </NavLink>
     </Grid>
   );
 }
