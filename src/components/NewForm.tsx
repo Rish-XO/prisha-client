@@ -18,21 +18,41 @@ function NewForm() {
   const [author, setAuthor] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [imagePreview, setImagePreview] = useState<string>("");
+const [pdfNamePreview, setPdfNamePreview] = useState<string>('')
 
-  const handleSubmit = async (e: React.FormEvent) =>{
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  };
 
-  }
+  const imageUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
 
-const imageUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files
-  console.log(file);
-}
-const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files
-  console.log(file);
-}
+      reader.onload = (e) => {
+        const imagePreviewURL = e.target?.result as string;
+        // console.log("Preview URL:", imagePreviewURL);
+        setImagePreview(imagePreviewURL)
+      };
 
+      reader.readAsDataURL(file);
+    } else {
+      console.log("No file selected");
+    }
+  };
+
+  const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      console.log(file);
+      setPdfNamePreview(file.name)
+    } else {
+      console.log("No file selected");
+    }
+  };
 
   return (
     <Container sx={{ marginTop: "40px" }}>
@@ -50,6 +70,13 @@ const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
             </NavLink>
             <Box width="25%">
               <div className="add-photo">
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="img-preview"
+                  />
+                )}
                 <label htmlFor="bookCoverInput">
                   <input
                     type="file"
@@ -87,7 +114,7 @@ const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
               margin="normal"
               sx={{ marginBottom: 2 }}
               value={title}
-              onChange={(e)=> setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <div style={{ display: "flex", marginBottom: "18px" }}>
               <TextField
@@ -120,6 +147,9 @@ const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
 
             {/* pdf input */}
             <div className="pdf-input">
+              {pdfNamePreview && (
+                <Typography>{pdfNamePreview}</Typography>
+              )}
               <label htmlFor="pdfInput">
                 <input
                   type="file"
@@ -149,7 +179,12 @@ const pdfUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
                 </div>
               </label>
             </div>
-            <Button sx={{marginTop: '30px', marginLeft:"20px"}} type="submit" variant="contained" color="primary">
+            <Button
+              sx={{ marginTop: "30px", marginLeft: "20px" }}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Submit
             </Button>
           </Grid>
