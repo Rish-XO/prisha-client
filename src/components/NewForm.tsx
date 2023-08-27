@@ -8,11 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import BackupIcon from "@mui/icons-material/Backup";
 import "./NewForm.css";
 import axios from "axios";
+import { trpc } from "../lib/trpc";
 
 function NewForm() {
   const [title, setTitle] = useState<string>("");
@@ -23,42 +24,60 @@ function NewForm() {
   const [pdfNamePreview, setPdfNamePreview] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [pdf, setPdf] = useState<File | null>(null);
-  const [imageNameFromServer, setImageNameFromServer] = useState<string>("");
-  const [pdfNameFromServer, setPdfNameFromServer] = useState<string>("");
+
+  const navigate = useNavigate();
+
+  //create book trp method
+  const createBook = trpc.create.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (image) {
-      const formData = new FormData();
-      formData.append("image", image);
+    if (image && pdf) {
+      const imgData = new FormData();
+      imgData.append("image", image);
+
+      const pdfData = new FormData();
+      pdfData.append("file", pdf);
       try {
-        const response = await axios.post(
+        const imageResponse = await axios.post(
           "http://localhost:5000/upload-image",
-          formData
+          imgData
         );
-        // console.log("Image uploaded:", response.data);
-        setImageNameFromServer(response.data);
+        const imgName = await imageResponse.data;
+        console.log("Image uploaded:", imgName);
+
+        const pdfResponse = await axios.post(
+          "http://localhost:5000/upload-pdf",
+          pdfData
+        );
+        const pdfName = await pdfResponse.data;
+        console.log("pdf uploaded:", pdfName);
+
+        // sending all data to backend to db
+        const bookData = {
+          title: title,
+          author: author,
+          time: time,
+          description: description,
+          image: imgName,
+          pdf: pdfName,
+        };
+
+        console.log("book data before trpc", bookData);
+
+        const query = createBook.mutate(bookData, {
+          onSuccess(data: any, variables, context) {
+            console.log(typeof data, "data after mutation");
+            navigate(`/${data.id}`);
+          },
+        });
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
-
-    if (pdf) {
-      const formData = new FormData();
-      formData.append("image", pdf);
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/upload-pdf",
-          formData
-        );
-        // console.log("Image uploaded:", response.data);
-        setPdfNameFromServer(response.data);
-      } catch (error) {
-        console.error("Error uploading pdf:", error);
-      }
-    }
   };
+  // end of submit
 
   const imageUploadHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
