@@ -1,5 +1,11 @@
-.pic{
+.pic {
     object-fit: contain;
     width: 400px;
     height: 500px;
+}
+
+.pdf {
+    object-fit: contain;
+    width: 500px;
+    height: 900px;
 }
