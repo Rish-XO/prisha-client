@@ -98,7 +98,10 @@ function ShowBook() {
                 src={book.image}
                 alt=""
                 style={{
-                  maxWidth: "600px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  maxWidth: "400px",
                   height: "500px",
                   objectFit: "contain",
                 }}

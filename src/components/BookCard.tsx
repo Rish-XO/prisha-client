@@ -54,7 +54,7 @@ function BookCard() {
             </CardActionArea>
           </Card>
           <Box>
-            <Typography>{item.title}</Typography>
+            <Typography fontWeight={700} sx={{fontStyle : 'italic', marginTop: '10px'}}>{item.title}</Typography>
             <Typography variant="subtitle2">{item.author}</Typography>
           </Box>
         </Grid>
