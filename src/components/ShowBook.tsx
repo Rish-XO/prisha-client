@@ -62,6 +62,8 @@ function ShowBook() {
       {/* rendering the pdf */}
 
       {book && (
+        <div style={{display: 'flex', justifyContent : 'center'}}>
+
         <Dialog open={viewPdf} onClose={closePdf} maxWidth="md" fullWidth>
           <IconButton
             aria-label="close"
@@ -83,6 +85,7 @@ function ShowBook() {
             </Document>
           </DialogContent>
         </Dialog>
+      </div>
       )}
 
       {book && (
@@ -137,14 +140,16 @@ function ShowBook() {
                   Rate this book
                 </Button>
               ) : (
-                <Rating
+                <>
+                  <Rating
                   value={userRating}
                   onChange={(event, newValue) => {
                     console.log(newValue, " Rating value");
-
                     setUserRating(newValue);
                   }}
-                ></Rating>
+                  ></Rating>
+                <Button sx={{marginLeft: '10px'}}>Rate</Button>
+                  </>
               )}
             </Box>
             <Box sx={{ marginTop: "40px" }}>
