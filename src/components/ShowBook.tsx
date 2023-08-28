@@ -2,26 +2,40 @@ import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogContent,
   Grid,
+  IconButton,
   Rating,
   Typography,
 } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { NavLink, useParams } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import { trpc } from "../lib/trpc";
+import { pdfjs, Document, Page } from "react-pdf";
+import CloseIcon from '@mui/icons-material/Close';
 
-// interface Book {
-//   author: string;
-//   book_id: string;
-//   description: string;
-//   image: string;
-//   pdf: string;
-//   time: string;
-//   title: string;
-// }
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function ShowBook() {
+  const [viewPdf, setViewPdf] = useState(false);
+  const [numPages, setNumPages] = useState<number>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    setNumPages(numPages);
+  }
+
+
+  const openPdf = () =>{
+    setViewPdf(true)
+  }
+
+  const closePdf = () =>{
+    setViewPdf(false)
+  }
+
   const { id } = useParams();
   console.log(id, "id from params");
 
@@ -31,6 +45,25 @@ function ShowBook() {
 
   return (
     <Container sx={{ marginTop: "40px" }}>
+      {/* rendering the pdf */}
+
+      {book &&  (
+      <Dialog open={viewPdf} onClose={closePdf} maxWidth="md" fullWidth>
+        <IconButton
+          aria-label="close"
+          onClick={closePdf}
+          sx={{ position: "absolute", right: 8, top: 8 }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent>
+
+        <Document file={book.pdf} onLoadSuccess={onDocumentLoadSuccess}>
+          <Page pageNumber={pageNumber} />
+        </Document>
+        </DialogContent>
+      </Dialog>
+      )}
       {book && (
         <Grid container>
           <Grid item xs={12} md={5}>
@@ -43,7 +76,7 @@ function ShowBook() {
             <Box width="25%">
               <img
                 src={book.image}
-                alt=""
+                alt="book image"
                 style={{
                   maxWidth: "600px",
                   height: "500px",
@@ -66,14 +99,18 @@ function ShowBook() {
             <Typography sx={{ marginTop: "10px" }} variant="subtitle2">
               Book read time: {book.time} mins
             </Typography>
-            <Typography variant="h6" fontWeight={500} sx={{ marginTop: "10px" }}>
-              {book.description} 
+            <Typography
+              variant="h6"
+              fontWeight={500}
+              sx={{ marginTop: "10px" }}
+            >
+              {book.description}
             </Typography>
-            <Box sx={{marginTop: "40px"}}>
+            <Box sx={{ marginTop: "40px" }}>
               <Rating></Rating>
             </Box>
-            <Box sx={{marginTop: "40px"}}>
-              <Button variant="contained">Read this Book</Button>
+            <Box sx={{ marginTop: "40px" }}>
+              <Button variant="contained" onClick={openPdf}>Read this Book</Button>
             </Box>
           </Grid>
         </Grid>
