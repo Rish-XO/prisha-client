@@ -23,6 +23,8 @@ function ShowBook() {
   const [viewPdf, setViewPdf] = useState(false);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [showRating, setShowRating] = useState(false);
+  const [userRating, setUserRating] = useState<number | null>(null);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -68,18 +70,17 @@ function ShowBook() {
           >
             <CloseIcon />
           </IconButton>
-          <DialogContent>
-          <Box sx={{ marginTop: "20px", textAlign: "center" }}>
+          <DialogContent sx={{ objectFit: "contain" }}>
+            <Box sx={{ marginTop: "20px", textAlign: "center" }}>
               <Button onClick={goToPreviousPage}>Previous Page</Button>{" "}
               <span>
                 Page {pageNumber} of {numPages}
               </span>{" "}
               <Button onClick={goToNextPage}>Next Page</Button>
             </Box>
-            <Document file={book.pdf} onLoadSuccess={onDocumentLoadSuccess} >
-              <Page pageNumber={pageNumber} className="pdf"/>
+            <Document file={book.pdf} onLoadSuccess={onDocumentLoadSuccess}>
+              <Page pageNumber={pageNumber} className="pdf" />
             </Document>
-            
           </DialogContent>
         </Dialog>
       )}
@@ -122,15 +123,29 @@ function ShowBook() {
             <Typography sx={{ marginTop: "10px" }} variant="subtitle2">
               Book read time: {book.time} mins
             </Typography>
-            <Typography
-              variant="h6"
-              fontWeight={500}
-              sx={{ marginTop: "10px" }}
-            >
+            <Typography fontWeight={600} sx={{ marginTop: "10px" }}>
               {book.description}
             </Typography>
             <Box sx={{ marginTop: "40px" }}>
-              <Rating></Rating>
+              {!showRating ? (
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setShowRating(true);
+                  }}
+                >
+                  Rate this book
+                </Button>
+              ) : (
+                <Rating
+                  value={userRating}
+                  onChange={(event, newValue) => {
+                    console.log(newValue, " Rating value");
+
+                    setUserRating(newValue);
+                  }}
+                ></Rating>
+              )}
             </Box>
             <Box sx={{ marginTop: "40px" }}>
               <Button variant="contained" onClick={openPdf}>
