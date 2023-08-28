@@ -24,16 +24,16 @@ function ShowBook() {
 
   return (
     <Container sx={{ marginTop: "40px" }}>
-      <Grid container>
-        <Grid item xs={12} md={5}>
-          <NavLink to="/">
-            <Button variant="outlined" sx={{ marginBottom: "20px" }}>
-              <KeyboardArrowLeftIcon />
-              Back to Home
-            </Button>
-          </NavLink>
-          <Box width="25%">
-            {book && (
+      {book && (
+        <Grid container>
+          <Grid item xs={12} md={5}>
+            <NavLink to="/">
+              <Button variant="outlined" sx={{ marginBottom: "20px" }}>
+                <KeyboardArrowLeftIcon />
+                Back to Home
+              </Button>
+            </NavLink>
+            <Box width="25%">
               <img
                 src={book.image}
                 alt=""
@@ -43,13 +43,13 @@ function ShowBook() {
                   objectFit: "contain",
                 }}
               />
-            )}
-          </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <Typography>{book.title}</Typography>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={7}>
-          <Typography>balls</Typography>
-        </Grid>
-      </Grid>
+      )}
     </Container>
   );
 }

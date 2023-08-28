@@ -12,7 +12,7 @@
     border: 1px dashed var(--blue-700-bay, #27378C);
     margin-left: 18px;
     margin-top: 16px;
-}
+} 
 
 .img-preview {
     object-fit: contain;
